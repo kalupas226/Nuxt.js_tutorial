@@ -45,10 +45,11 @@ export default {
   },
   computed: {
     userPosts() {
-        let honoka = Object.assign(this.user.posts)
       return Object.entries(this.user.posts).map(([id, post]) => {
-        let copiedPost = Object.assign({}, post)
-        copiedPost.created_at = moment(copiedPost.created_at).format("YYYY/MM/DD HH:mm:ss");
+        let copiedPost = Object.assign({}, post);
+        copiedPost.created_at = moment(copiedPost.created_at).format(
+          "YYYY/MM/DD HH:mm:ss"
+        );
         return { id, ...copiedPost };
       });
     },
