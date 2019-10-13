@@ -31,30 +31,33 @@
 </template>
 
 <script>
-import moment from '~/plugins/moment'
-import { mapGetters } from 'vuex'
+import moment from "~/plugins/moment";
+import { mapGetters } from "vuex";
 
 export default {
-    async asyncData({ store, route, error }) {
-        const { id } = route.params
-        try {
-            await store.dispatch('users/fetchUser', { id })
-        } catch (e) {
-            error({ statusCode: 404 })
-        }
-    },
-    computed: {
-        userPosts() {
-            return Object.entries(this.user.posts).map(([id, post]) => {
-                post.created_at = moment(post.created_at).format('YYYY/MM/DD HH:mm:ss')
-                return { id, ...post }
-            })
-        },
-        user() {
-            const user = this.users.find(u => u.id === this.$route.params.id)
-            if (!user) return null
-            return Object.assign({ posts: [] }, user)
-        },
-        ...mapGetters('users', ['users'])
+  async asyncData({ store, route, error }) {
+    const { id } = route.params;
+    try {
+      await store.dispatch("users/fetchUser", { id });
+    } catch (e) {
+      error({ statusCode: 404 });
     }
-}
+  },
+  computed: {
+    userPosts() {
+        let honoka = Object.assign(this.user.posts)
+      return Object.entries(this.user.posts).map(([id, post]) => {
+        let copiedPost = Object.assign({}, post)
+        copiedPost.created_at = moment(copiedPost.created_at).format("YYYY/MM/DD HH:mm:ss");
+        return { id, ...copiedPost };
+      });
+    },
+    user() {
+      const user = this.users.find(u => u.id === this.$route.params.id);
+      if (!user) return null;
+      return Object.assign({ posts: [] }, user);
+    },
+    ...mapGetters("users", ["users"])
+  }
+};
+</script>
